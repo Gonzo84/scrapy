@@ -33,7 +33,7 @@ export class MobileDeController {
   @Get('scrap')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
-  startScraping() {
+  startScraping(): Promise<string> {
     return this.mobileDeService.scrap();
   }
 

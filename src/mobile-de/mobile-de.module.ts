@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PassportModule } from '@nestjs/passport';
 import { MobileDeService } from './mobile-de.service';
 import { MobileDeController } from './mobile-de.controller';
-import { PassportModule } from '@nestjs/passport';
 import { MobileDeEntity } from './entities/mobile-de.entity';
+import { PuppeteerService } from '../services/puppeteer.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { MobileDeEntity } from './entities/mobile-de.entity';
   ],
   controllers: [MobileDeController],
   exports: [MobileDeService],
-  providers: [MobileDeService]
+  providers: [MobileDeService, PuppeteerService],
 })
 export class MobileDeModule {
 }

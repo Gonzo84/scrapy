@@ -6,6 +6,10 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+RUN apk add --no-cache curl bash openssh python udev ttf-freefont chromium git
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV CHROMIUM_PATH /usr/bin/chromium-browser
+
 RUN npm install
 
 COPY . .
@@ -18,9 +22,6 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
-
-# see https://devcenter.heroku.com/articles/exec#enabling-docker-support
-RUN apk add --no-cache curl bash openssh python
 
 COPY package*.json ./
 

@@ -10,5 +10,17 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true
-  }
+  },
+  "include": [
+    "src",
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "node_modules/puppeteer-extra/dist/index.d.ts",
+    "node_modules/puppeteer-extra-plugin-stealth/index.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "./test/**/*.spec.ts"
+  ]
 }
