@@ -1,48 +1,47 @@
-// import * as csv from 'csvtojson';
-
 const csv = require('csvtojson');
-import { writeFile } from 'fs';
-import * as path from 'path';
-
-// const p = path.join(
-//   path.dirname(process.mainModule.filename),
-//   'data',
-//   'test.json'
-// );
-
+const fs = require('fs');
 
 class Transform {
   public async run() {
-
     csv()
       .fromFile('./data/cars.csv')
       .then((jsonObj) => {
-        let carArr = JSON.parse(JSON.stringify(jsonObj));
-        let i = 0;
-        let cars = [];
-        while (i < carArr.length) {
-          for (const [key, value] of Object.entries(carArr[i])) {
-            const keys: string[] = key.split(';');
-            // @ts-ignore
-            const values: string[] = value.split(';');
-            let index = 0;
-            let car = {};
-            while (index < keys.length) {
-              let tempKey = keys[index];
-              let tempValue = values[index];
-              car[tempKey] = tempValue;
-              index++;
-            }
-            cars.push(car);
+        const carArr = JSON.parse(JSON.stringify(jsonObj));
+        const cars = [];
+        carArr.forEach((car) => {
+          // eslint-disable-next-line no-restricted-syntax
+          for (const [key, value] of Object.entries(car)) {
+            cars.push(Transform.createCarObj(key, value));
           }
-          i++;
-        }
-        // writeFile(p, JSON.stringify(cars), err => {
-        //   console.log(err);
-        // });
+        });
+        fs.access('./car-data', (error) => {
+          if (error) {
+            console.log('Directory does not exist.');
+            fs.mkdir('car-data', { mode: '777' }, (err) => {
+              if (err) {
+                console.log('err ', err);
+              }
+              console.log('dir car-data created');
+            });
+          }
+          fs.writeFile('car-data/cars.json', JSON.stringify(cars), (err) => {
+            if (err) {
+              console.log('err ', err);
+            }
+          });
+        });
       });
   }
 
+  private static createCarObj(keysString, valuesString) {
+    const carObj = {};
+    const keys: string[] = keysString.split(';');
+    const values: string[] = valuesString.split(';');
+    keys.forEach((key, index) => {
+      carObj[key] = values[index];
+    });
+    return carObj;
+  }
 }
 
 const transform = new Transform();

@@ -23,4 +23,8 @@ export class MobileDeService {
   remove(id: number) {
     return `This action removes a #${id} mobileDe`;
   }
+
+  scrap() {
+
+  }
 }

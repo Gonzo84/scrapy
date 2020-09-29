@@ -1,14 +1,29 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
+
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+
 import { MobileDeService } from './mobile-de.service';
 import { CreateMobileDeDto } from './dto/create-mobile-de.dto';
 import { UpdateMobileDeDto } from './dto/update-mobile-de.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('mobile-de')
 @Controller('mobile-de')
 export class MobileDeController {
-  constructor(private readonly mobileDeService: MobileDeService) {}
-  
+  constructor(private readonly mobileDeService: MobileDeService) {
+  }
+
   @Post()
   create(@Body() createMobileDeDto: CreateMobileDeDto) {
     return this.mobileDeService.create(createMobileDeDto);
@@ -19,7 +34,7 @@ export class MobileDeController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
   startScraping() {
-    return this.mobileDeService.findAll();
+    return this.mobileDeService.scrap();
   }
 
   @Get()
